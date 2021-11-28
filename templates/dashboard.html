@@ -1,0 +1,55 @@
+{% extends "layout.html" %} {% block body %} {% load crispy_forms_tags %}
+
+<div class="col-md-12">
+  <h3>Dashboard</h3>
+  <hr />
+  <a class="btn btn-danger" href="/articles/addarticle" role="button">
+    Makale Ekle
+  </a>
+  <hr />
+  {% if articles %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">makale</th>
+        <th scope="col">Yazar</th>
+        <th scope="col">Tarih</th>
+        <th scope="col">Düzenle</th>
+        <th scope="col">Sil</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for article in articles %}
+
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>
+          <a href="/articles/article/{{article.id}}">{{article.title}}</a>
+        </td>
+        <td>{{article.author.username}}</td>
+        <td>{{article.created_date}}</td>
+        <td>
+          <a
+            class="btn btn-outline-success"
+            role="button"
+            href="/articles/update/{{article.id}}"
+            >Edit</a
+          >
+        </td>
+        <td>
+          <a
+            class="btn btn-outline-danger"
+            role="button"
+            href="/articles/delete/{{article.id}}"
+            >Sil</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %} {% endif %}
+</div>
+
+{% endblock body %}

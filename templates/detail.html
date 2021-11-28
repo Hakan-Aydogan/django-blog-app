@@ -1,0 +1,94 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container mt-5">
+  {% if article.title %}
+
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- Post content-->
+
+      <!-- Post header-->
+      <header class="mb-4">
+        <!-- Post title-->
+        <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+        <!-- Post meta content-->
+        <div class="text-muted fst-italic mb-2">
+          Posted on {{article.created_date}}
+        </div>
+        <!-- Post categories-->
+
+        <a class="badge bg-secondary text-decoration-none"
+          >{{article.author.username}}</a
+        >
+      </header>
+      <!-- Preview image figure "-->
+      <figure class="mb-4">
+        <img class="img-fluid rounded" src="{{article.article_image.url}}" />
+      </figure>
+      <!-- Post content-->
+      <section class="mb-5">
+        <p class="fs-5 mb-4">{{article.content|safe}}</p>
+      </section>
+      <section class="mb-5">
+        <div class="card d-flex bg-light">
+          <div class="card-body">
+            <!-- Comment form-->
+            <form
+              class="mb-4"
+              method="POST"
+              action="{% url 'comment' article.id %}"
+            >
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="nameInput">İsim</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="İsim"
+                  name="comment_author"
+                />
+                <small id="name" class="form-text text-muted"
+                  >Bilgileriniz paylaşılmayacaktır</small
+                >
+              </div>
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  placeholder="Bir Yorum yaz..."
+                  name="comment_content"
+                ></textarea>
+                <button
+                  class="btn btn-success float-right"
+                  type="submit"
+                  style="margin: 15px"
+                >
+                  Yorum yap
+                </button>
+              </div>
+            </form>
+            <!-- Comment with nested comments-->
+            <div class="d-flex mb-4" style="margin: 15px">
+              <!-- Parent comment-->
+              {% for comment in comments %}
+              <div class="flex-shrink-0">
+                <img
+                  class="rounded-circle"
+                  src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                  alt="..."
+                />
+              </div>
+            </div>
+            <div class="ms-3">
+              <div class="fw-bold">{{comment_author}}</div>
+              {{comment.comment_content}}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      {% else %} {% endif %}
+    </div>
+  </div>
+
+  {% endblock body %}
+</div>

@@ -1,0 +1,46 @@
+{% extends "layout.html" %} {% block body %} {% load crispy_forms_tags %}
+<div class="row">
+  <div class="col-lg-12">
+  <p><h3>Makaleler</h3></p>
+  <form class="form-inline my-2 my-lg-0">
+        {% csrf_token %}
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Ara"
+          aria-label="Ara"
+          name="keyword"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Ara
+        </button>
+    </form>
+  </div>
+  
+</div>
+
+<div class="card-deck">
+  {% for article in articles %}
+  <div class="card" >
+    <img
+      class="card-img-top"
+      src="{{article.article_image.url}}"
+      alt="{{article.title}}"
+      href="article/{{article.id}}"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{article.title}}</h5>
+      <p class="card-text">{{article.content|truncatewords:20|safe }}</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">{{article.created_date}}</small>
+      <a class="float-right" href="article/{{article.id}}" floatformat="" class="btn btn-primary">Devamı</a>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+<hr />
+
+{% endblock body %}
